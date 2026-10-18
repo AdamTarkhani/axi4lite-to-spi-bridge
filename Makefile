@@ -3,7 +3,7 @@
 
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
-RTL ?= rtl/top_module.v
+RTL ?= rtl/top_module.sv
 
 VERILOG_SOURCES = $(PWD)/$(RTL)
 COMPILE_ARGS += -g2012

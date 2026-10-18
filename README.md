@@ -1,6 +1,6 @@
 # AXI4-Lite to SPI Bridge
 
-An AXI4-Lite slave that drives an SPI master, written in Verilog, with a cocotb verification environment.
+An AXI4-Lite slave that drives an SPI master, written in SystemVerilog, with a cocotb verification environment.
 The README has two parts: [the RTL](#part-1-the-rtl) and [the verification](#part-2-verification).
 
 All simulation was done on EDA Playground (cocotb + Icarus Verilog); the files were transferred here from there.
@@ -20,7 +20,7 @@ reads and writes four registers over AXI4-Lite, and the bridge turns those into 
  (CPU / testbench)         (4 registers, responses)                (sclk, cs, out_bit, in_bit)
 ```
 
-### Modules (all in `rtl/top_module.v`)
+### Modules (all in `rtl/top_module.sv`)
 
 | Module | Job |
 |---|---|
@@ -107,7 +107,7 @@ other side of the bridge. Simulator: Icarus Verilog 12 with cocotb 2.1 (`-g2012`
 
 ### Running it
 
-    make        # runs testbench.py (12 tests) against rtl/top_module.v
+    make        # runs testbench.py (12 tests) against rtl/top_module.sv
 
 You need Python 3.9+, cocotb 2.1, Icarus Verilog and make.
 
