@@ -23,6 +23,9 @@ class SpiAgent:
     def set_response(self, word):
         self.tx_word = word
 
+    # TODO: support CPOL/CPHA. Leading edge = rising if cpol == 0 else falling.
+    # cpha 0: sample on leading edge, drive on trailing edge, first bit already out when cs falls.
+    # cpha 1: drive on leading edge, sample on trailing edge.    
     async def run(self):
         while True:
             await FallingEdge(self.dut.cs)
