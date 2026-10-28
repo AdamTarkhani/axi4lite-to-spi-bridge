@@ -29,19 +29,35 @@ class SpiAgent:
     async def run(self):
         while True:
             await FallingEdge(self.dut.cs)
+            if self.dut.cpol.value == 0:
+                lead = RisingEdge
+                trail = FallingEdge
+            else:
+                lead = FallingEdge
+                trail = RisingEdge
+
             sent = self.tx_word
-            self.dut.in_bit.value = (sent >> 31) & 1
+            if self.dut.cpha.value == 0:
+                self.dut.in_bit.value = (sent >> 31) & 1
 
             received = 0
             for i in range(32):
-                await RisingEdge(self.dut.sclk)
-                await ReadOnly()
-                received = (received << 1) | int(self.dut.out_bit.value)
+                if self.dut.cpha.value == 0:
+                    await lead(self.dut.sclk)
+                    await ReadOnly()
+                    received = (received << 1) | int(self.dut.out_bit.value)
 
-                if i == 31:
-                    break
-                await FallingEdge(self.dut.sclk)
-                self.dut.in_bit.value = (sent >> (30 - i)) & 1
+                    if i == 31:
+                        break
+                    await trail(self.dut.sclk)
+                    self.dut.in_bit.value = (sent >> (30 - i)) & 1
+                else:
+                    await lead(self.dut.sclk)
+                    self.dut.in_bit.value = (sent >> (31 - i)) & 1
+
+                    await trail(self.dut.sclk)
+                    await ReadOnly()
+                    received = (received << 1) | int(self.dut.out_bit.value)
 
             await RisingEdge(self.dut.cs)
             self.transfers.append(SpiTransfer(received, sent))
