@@ -316,7 +316,7 @@ module AXI_read_slave (
 
 endmodule
 
-
+//FIX THE SPI MASTER
 module SPI_master #(
     parameter CLK_FRQ,
     parameter N
